@@ -235,7 +235,7 @@ public class Main {
                         Cell cell = new Cell();
                         List<String> citedIn = new ArrayList<>();
                         NodeList citedInNodes =
-                                findNodes(xPath, "//p[contains(text(), " + buildXpathConcat(textContent) + ")]", document);
+                                findNodes(xPath, "//p[contains(text(), " + delimiterProofContainsArg(textContent) + ")]", document);
                         for (int k = 0; k < citedInNodes.getLength(); k++) {
                             citedIn.add(getOuterXML(citedInNodes.item(k), lsSerializer, lsOutput));
                         }
@@ -392,31 +392,32 @@ public class Main {
     }
 
     /**
-     * Costruisce una chiamata a concat di XPath per evitare conflitti tra il contenuto di textContent e i delimitatori
+     * Costruisce una porzione di espressione XPath per evitare conflitti tra il contenuto di textContent e i delimitatori
      * di stringhe usati in concat
      * @param textContent il contenuto testuale del nodo
      * @return la chiamata a concat senza conflitti
      */
-    private static String buildXpathConcat(String textContent) {
+    private static String delimiterProofContainsArg(String textContent) {
         String delimiter = "'";
 
         // Separa le stringhe in base a delimiter e lo include nel risultato
         String[] tokens = textContent.split("(?=" + delimiter + ")|(?<=" + delimiter + ")");
 
-        if (tokens.length <= 1) {
-            return "'" + textContent.replaceAll("\"", "\\\\\"") + "'";
+        if (tokens.length <= 1) {   // Non serve concat
+            return "'" + textContent + "'";
         }
 
+        // Costruzione argomenti di concat
         StringBuilder stringBuilder = new StringBuilder();
         for (String token : tokens) {
             if (token.equals("'")) {
                 stringBuilder.append("\"'\", ");
             } else {
-                stringBuilder.append("'" + token + "', ");
+                stringBuilder.append("'").append(token).append("', ");
             }
         }
         String arguments = stringBuilder.toString();
-        arguments = arguments.substring(0, arguments.length() - 2);
+        arguments = arguments.substring(0, arguments.length() - 2); // Rimozione dell'ultima virgola
 
         return "concat(" + arguments + ")";
     }

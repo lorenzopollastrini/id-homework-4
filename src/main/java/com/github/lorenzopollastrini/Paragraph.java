@@ -1,6 +1,5 @@
 package com.github.lorenzopollastrini;
 
-import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
 
