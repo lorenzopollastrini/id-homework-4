@@ -173,12 +173,16 @@ public class Main {
             if (captionNode != null) {
                 // Estrazione delle menzioni di riferimenti bibliografici contenute nella didascalia
                 NodeList captionCrossRefsNodes = findNodes(xPath, "descendant::xref[@ref-type='bibr']", captionNode);
+                Map<String, Node> ridToNode = new HashMap<>();
                 for (int j = 0; j < captionCrossRefsNodes.getLength(); j++) {
                     Node captionCrossRefNode = captionCrossRefsNodes.item(j);
                     String captionCrossRefId = captionCrossRefNode.getAttributes().getNamedItem("rid").getNodeValue();
-                    Node captionCitationNode = findNode(xPath, "//ref[@id='" + captionCrossRefId + "']", document);
-                    if (captionCitationNode != null) { // Alcuni documenti XML hanno un xref che punta a un ref inesistente
-                        captionCitations.add(getOuterXML(captionCitationNode, lsSerializer, lsOutput));
+                    if (!ridToNode.containsKey(captionCrossRefId)) {
+                        ridToNode.put(captionCrossRefId, captionCrossRefNode);
+                        Node captionCitationNode = findNode(xPath, "//ref[@id='" + captionCrossRefId + "']", document);
+                        if (captionCitationNode != null) { // Alcuni documenti XML hanno un xref che punta a un ref inesistente
+                            captionCitations.add(getOuterXML(captionCitationNode, lsSerializer, lsOutput));
+                        }
                     }
                 }
             }
@@ -202,11 +206,15 @@ public class Main {
                 List<String> citations = new ArrayList<>();
                 // Estrazione delle menzioni di riferimenti bibliografici contenute nel paragrafo
                 NodeList paragraphCrossRefsNodes = findNodes(xPath, "descendant::xref[@ref-type='bibr']", paragraphNode);
+                Map<String, Node> ridToNode = new HashMap<>();
                 for (int k = 0; k < paragraphCrossRefsNodes.getLength(); k++) {
                     Node paragraphCrossRefNode = paragraphCrossRefsNodes.item(k);
                     String paragraphCrossRefId = paragraphCrossRefNode.getAttributes().getNamedItem("rid").getNodeValue();
-                    Node paragraphCitationNode = findNode(xPath, "//ref[@id='" + paragraphCrossRefId + "']", document);
-                    citations.add(getOuterXML(paragraphCitationNode, lsSerializer, lsOutput));
+                    if (!ridToNode.containsKey(paragraphCrossRefId)) {
+                        ridToNode.put(paragraphCrossRefId, paragraphCrossRefNode);
+                        Node paragraphCitationNode = findNode(xPath, "//ref[@id='" + paragraphCrossRefId + "']", document);
+                        citations.add(getOuterXML(paragraphCitationNode, lsSerializer, lsOutput));
+                    }
                 }
                 paragraph.setCitations(citations);
                 paragraphs.add(paragraph);
@@ -276,12 +284,16 @@ public class Main {
             if (captionNode != null) {
                 // Estrazione delle menzioni di riferimenti bibliografici contenute nella didascalia
                 NodeList captionCrossRefsNodes = findNodes(xPath, "descendant::xref[@ref-type='bibr']", captionNode);
+                Map<String, Node> ridToNode = new HashMap<>();
                 for (int j = 0; j < captionCrossRefsNodes.getLength(); j++) {
                     Node captionCrossRefNode = captionCrossRefsNodes.item(j);
                     String captionCrossRefId = captionCrossRefNode.getAttributes().getNamedItem("rid").getNodeValue();
-                    Node captionCitationNode = findNode(xPath, "//ref[@id='" + captionCrossRefId + "']", document);
-                    if (captionCitationNode != null) { // Alcuni documenti XML hanno un xref che punta a un ref inesistente
-                        captionCitations.add(getOuterXML(captionCitationNode, lsSerializer, lsOutput));
+                    if (!ridToNode.containsKey(captionCrossRefId)) {
+                        ridToNode.put(captionCrossRefId, captionCrossRefNode);
+                        Node captionCitationNode = findNode(xPath, "//ref[@id='" + captionCrossRefId + "']", document);
+                        if (captionCitationNode != null) { // Alcuni documenti XML hanno un xref che punta a un ref inesistente
+                            captionCitations.add(getOuterXML(captionCitationNode, lsSerializer, lsOutput));
+                        }
                     }
                 }
             }
@@ -297,11 +309,15 @@ public class Main {
                 List<String> citations = new ArrayList<>();
                 // Estrazione delle menzioni di riferimenti bibliografici contenute nel paragrafo
                 NodeList paragraphCrossRefsNodes = findNodes(xPath, "descendant::xref[@ref-type='bibr']", paragraphNode);
+                Map<String, Node> ridToNode = new HashMap<>();
                 for (int k = 0; k < paragraphCrossRefsNodes.getLength(); k++) {
                     Node paragraphCrossRefNode = paragraphCrossRefsNodes.item(k);
                     String paragraphCrossRefId = paragraphCrossRefNode.getAttributes().getNamedItem("rid").getNodeValue();
-                    Node paragraphCitationNode = findNode(xPath, "//ref[@id='" + paragraphCrossRefId + "']", document);
-                    citations.add(getOuterXML(paragraphCitationNode, lsSerializer, lsOutput));
+                    if (!ridToNode.containsKey(paragraphCrossRefId)) {
+                        ridToNode.put(paragraphCrossRefId, paragraphCrossRefNode);
+                        Node paragraphCitationNode = findNode(xPath, "//ref[@id='" + paragraphCrossRefId + "']", document);
+                        citations.add(getOuterXML(paragraphCitationNode, lsSerializer, lsOutput));
+                    }
                 }
                 paragraph.setCitations(citations);
                 paragraphs.add(paragraph);
