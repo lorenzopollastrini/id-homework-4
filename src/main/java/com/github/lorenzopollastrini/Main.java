@@ -161,18 +161,18 @@ public class Main {
             table.setBody(body);
 
             // Estrazione della didascalia
-            Node captionTableNode = findNode(xPath, "caption", tableWrapNode);
-            String captionTable = "";
-            if (captionTableNode != null) {
-                captionTable = getInnerXML(captionTableNode, lsSerializer, lsOutput);
+            Node captionNode = findNode(xPath, "caption", tableWrapNode);
+            String caption = "";
+            if (captionNode != null) {
+                caption = getInnerXML(captionNode, lsSerializer, lsOutput);
             }
-            table.setCaption(captionTable);
+            table.setCaption(caption);
 
             // Estrazione dei riferimenti bibliografici menzionati nella didascalia
             List<String> captionCitations = new ArrayList<>();
-            if (captionTableNode != null) {
+            if (captionNode != null) {
                 // Estrazione delle menzioni di riferimenti bibliografici contenute nella didascalia
-                NodeList captionCrossRefsNodes = findNodes(xPath, "descendant::xref[@ref-type='bibr']", captionTableNode);
+                NodeList captionCrossRefsNodes = findNodes(xPath, "descendant::xref[@ref-type='bibr']", captionNode);
                 for (int j = 0; j < captionCrossRefsNodes.getLength(); j++) {
                     Node captionCrossRefNode = captionCrossRefsNodes.item(j);
                     String captionCrossRefId = captionCrossRefNode.getAttributes().getNamedItem("rid").getNodeValue();
@@ -270,6 +270,22 @@ public class Main {
                 caption = getInnerXML(captionNode, lsSerializer, lsOutput);
             }
             figure.setCaption(caption);
+
+            // Estrazione dei riferimenti bibliografici menzionati nella didascalia
+            List<String> captionCitations = new ArrayList<>();
+            if (captionNode != null) {
+                // Estrazione delle menzioni di riferimenti bibliografici contenute nella didascalia
+                NodeList captionCrossRefsNodes = findNodes(xPath, "descendant::xref[@ref-type='bibr']", captionNode);
+                for (int j = 0; j < captionCrossRefsNodes.getLength(); j++) {
+                    Node captionCrossRefNode = captionCrossRefsNodes.item(j);
+                    String captionCrossRefId = captionCrossRefNode.getAttributes().getNamedItem("rid").getNodeValue();
+                    Node captionCitationNode = findNode(xPath, "//ref[@id='" + captionCrossRefId + "']", document);
+                    if (captionCitationNode != null) { // Alcuni documenti XML hanno un xref che punta a un ref inesistente
+                        captionCitations.add(getOuterXML(captionCitationNode, lsSerializer, lsOutput));
+                    }
+                }
+            }
+            figure.setCaptionCitations(captionCitations);
 
             // Estrazione dei paragrafi che menzionano la figura
             List<Paragraph> paragraphs = new ArrayList<>();

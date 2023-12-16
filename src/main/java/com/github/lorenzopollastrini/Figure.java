@@ -14,6 +14,8 @@ public class Figure {
     private String figId;
     private String source;
     private String caption;
+    @SerializedName("caption_citations")
+    private List<String> captionCitations;
     private List<Paragraph> paragraphs;
 
 }
