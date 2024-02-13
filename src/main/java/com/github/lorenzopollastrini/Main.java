@@ -33,7 +33,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         String usage = "Utilizzo: java com.github.lorenzopollastrini.Main" +
-                " [-s SOURCE_DIRECTORY] [-d DESTINATION_DIRECTORY]\n\n";
+                " -s SOURCE_DIRECTORY -d DESTINATION_DIRECTORY\n\n";
 
         if (args.length > 0 && ("-h".equals(args[0]) || "-help".equals(args[0]))) {
             System.out.println(usage);

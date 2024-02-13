@@ -16,7 +16,7 @@ public class StatsCalculator {
 
     public static void main(String[] args) throws Exception {
         String usage = "Utilizzo: java com.github.lorenzopollastrini.StatsCalculator" +
-                " [-s SOURCE_DIRECTORY]\n\n";
+                " -s SOURCE_DIRECTORY\n\n";
 
         if (args.length > 0 && ("-h".equals(args[0]) || "-help".equals(args[0]))) {
             System.out.println(usage);

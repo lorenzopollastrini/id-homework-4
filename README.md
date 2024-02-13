@@ -14,6 +14,6 @@ eseguiti da riga di comando:
 * **StatsCalculator.java** contiene il codice che calcola e stampa alcune statistiche del dataset.
 
 ## Comandi
-* `java com.github.lorenzopollastrini.Main [-s SOURCE_DIRECTORY] [-d DESTINATION_DIRECTORY]`: estrae al percorso
+* `java com.github.lorenzopollastrini.Main -s SOURCE_DIRECTORY -d DESTINATION_DIRECTORY`: estrae al percorso
   `DESTINATION_DIRECTORY` (in formato JSON) le informazioni dagli articoli scientifici (in formato XML) contenuti al percorso
   `SOURCE_DIRECTORY`.
